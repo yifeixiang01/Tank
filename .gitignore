@@ -1,0 +1,6 @@
+TinnoveCinemaTicket-H5/dist/
+wutongTicket-H5/deploy_versions/
+.temp/
+.rn_temp/
+TinnoveCinemaTicket-H5/node_modules/
+.DS_Store
