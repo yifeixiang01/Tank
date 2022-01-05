@@ -13,7 +13,8 @@ class Map{
     this.num = null;
     this.mapWidth = 416;
     this.mapHeight = 416;
-
+    this.container.sortableChildren = true;
+    
     this.setMapLevel(this.level)
   }
 
@@ -58,6 +59,7 @@ class Map{
           grassSprite.position.set(j * this.tileSize + this.offsetX, i * this.tileSize + this.offsetY)
           grassSprite.width = this.tileSize
           grassSprite.height = this.tileSize
+          grassSprite.zIndex = 1000
           this.container.addChild(grassSprite)
         }else if(item == HOME){
           let homeSprite = Sprite.from(tankTextures['home.png'])

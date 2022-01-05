@@ -142,5 +142,61 @@ function bulletMapCollision(bullet, mapObj){
       break;
     }
   }
+
+  if(rowIndex >= mapObj.hTileCount || rowIndex < 0 || colIndex >= mapObj.wTileCount || colIndex < 0){
+    return
+  }
+
+  if(bullet.dir == UP || bullet.dir == DOWN){
+    let tempWidth = parseInt(bullet.x - map.offsetX - colIndex * mapObj.tileSize + bullet.size)
+
+    if(tempWidth % mapObj.tileSize == 0){
+      tileNum = parseInt(tempWidth / mapObj.tileSize)
+    }else{
+      tileNum = parseInt(tempWidth / mapObj.tileSize) + 1;
+    }
+    for(let i = 0; i < tileNum && (colIndex + i) < mapObj.wTileCount; i++){
+      let mapContent = mapObj.mapLevel[rowIndex][colIndex + 1]
+      if(mapContent == WALL || mapContent == GRID || mapContent == HOME || mapContent == ANOTHERHOME){
+        result = true;
+        if(mapContent == WALL){
+          //墙被打掉
+          mapChangeIndex.push([rowIndex, colIndex + i])
+        }else if(mapContent == GRID){
+
+        }else{
+          isGameOver = true;
+          break;
+        }
+      }
+    }
+  }else {
+    let tempHeight = parseInt(bullet.y - map.offsetY - rowIndex * mapObj.tileSize + bullet.size)
+    if(tempHeight % mapObj.tileSize == 0){
+      tileNum = parseInt(tempHeight / mapObj.tileSize)
+    }else{
+      tileNum = parseInt(tempHeight / mapObj.tileSize) + 1;
+    }
+    for(let i = 0; i < tileNum && (rowIndex + i) < mapObj.hTileCount; i++){
+      let mapContent = mapObj.mapLevel[rowIndex + i][colIndex]
+      if(mapContent == WALL || mapContent == GRID || mapContent == HOME || mapContent == ANOTHERHOME){
+        result = true;
+
+        if(mapContent == WALL){
+          //墙被打掉
+          mapChangeIndex.push([rowIndex + i, colIndex])
+        }else if(mapContent == GRID){
+
+        }else{
+          isGameOver = true;
+          break;
+        }
+      }
+
+    }
+    //更新地图
+    map.updateMap(mapChangeIndex, 0)
+    return result;
+  }
 }
 

@@ -28,7 +28,8 @@
     let loader = new Loader();
     let app = new Application({width: window.innerWidth - 60, height: window.innerHeight - 60, backgroundColor: 0x7f7f7f})
     document.body.appendChild(app.view)
-
+    app.stage.sortableChildren = true;
+    
     window.onresize = function(){
       app.resize(window.innerWidth - 60, window.innerHeight - 60)
     }
