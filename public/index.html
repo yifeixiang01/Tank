@@ -19,12 +19,13 @@
   <script src="./js/Bullet.js"></script>
   <script src="./js/Tank.js"></script>
   <script src="./js/Map.js"></script>
+  <script src="./js/CrackAnimation.js"></script>
   <script src="./js/game.js"></script>
   <!-- <script src="./js/keyboard.js"></script> -->
 </head>
 <body>
   <script>
-    let { Application, Container, Sprite, Loader, Text, TextStyle, Graphics, Texture,  Rectangle } = PIXI
+    let { Application, Container, Sprite, Loader, Text, TextStyle, Graphics, Texture,  Rectangle, AnimatedSprite } = PIXI
     let loader = new Loader();
     let app = new Application({width: window.innerWidth - 60, height: window.innerHeight - 60, backgroundColor: 0x7f7f7f})
     document.body.appendChild(app.view)

@@ -157,5 +157,6 @@ class Bullet {
     // if(!this.owner.isAI){
     //   BULLET_DESTROY_AUDIO.play();
     // }
+    new CrackAnimation(CRACK_TYPE_BULLET, this, this.x, this.y)
   }
 }

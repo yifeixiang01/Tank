@@ -124,6 +124,7 @@ class PlayerTank extends Tank{
     this.hit = false;
 
     let player = Sprite.from(texture)
+    player.tint = 0xFF9933
     player.anchor.set(0.5, 0.5)
     this.container.addChild(player)
 

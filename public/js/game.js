@@ -33,12 +33,12 @@ class Game{
       map.init();
 
       let enemyTank1 = new EnemyTank(tankTextures['tank_enemy_2.png'], 150, 130, LEFT);
-      // let enemyTank2 = new EnemyTank(tankTextures['tank_enemy_2.png'], 200, 500, UP);
+      let enemyTank2 = new EnemyTank(tankTextures['tank_enemy_2.png'], 200, 260, UP);
       // let enemyTank3 = new EnemyTank(tankTextures['tank_enemy_3.png'], 300, 500, UP);
       // let enemyTank4 = new EnemyTank(tankTextures['tank_enemy_4.png'], 400, 500, UP);
       // let enemyTank5 = new EnemyTank(tankTextures['tank_enemy_5.png'], 500, 500, UP);
       app.stage.addChild(enemyTank1.container)
-      // app.stage.addChild(enemyTank2.container)
+      app.stage.addChild(enemyTank2.container)
       // app.stage.addChild(enemyTank3.container)
       // app.stage.addChild(enemyTank4.container)
       // app.stage.addChild(enemyTank5.container)
@@ -51,6 +51,9 @@ class Game{
       app.ticker.add(() => {
         enemyTank1.move()
         enemyTank1.shoot()
+
+        enemyTank2.move()
+        enemyTank2.shoot()
       })
       //监听键盘事件
       this.addKeyEventListener()
@@ -64,7 +67,7 @@ class Game{
       //  bullet.y= 300
       // app.stage.addChild(bullet)
 
-      
+      new CrackAnimation();
     })
   }
 
