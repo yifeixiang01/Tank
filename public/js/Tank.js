@@ -113,8 +113,8 @@ class PlayerTank extends Tank{
     this.protectedTime = 500;
     this.offsetX = 0; //坦克2与坦克1的距离
     this.speed = 4;
-    this.x = x
-    this.y = y
+    this.x = x + this.size / 2
+    this.y = y + this.size / 2
     this.dir = dir
 
     this.init(texture)
@@ -123,15 +123,18 @@ class PlayerTank extends Tank{
   init(texture){
     this.hit = false;
 
+    let rect = new Graphics()
+    rect.beginFill(0xCC3333)
+    rect.drawRect(-this.size / 2, -this.size/2, this.size, this.size)
+    rect.endFill();
+    this.container.addChild(rect)
+    this.container.width = this.container.height = this.size;
     let player = Sprite.from(texture)
-    player.tint = 0xFF9933
+    // player.tint = 0xFF9933
     player.anchor.set(0.5, 0.5)
     this.container.addChild(player)
 
-    this.container.width = this.size
-    this.container.height = this.size
-    this.container.x = this.x
-    this.container.y = this.y
+    this.container.position.set(this.x, this.y)
     this.container.rotation = Math.PI * this.dir / 2
 
     if(this.isProtected){
@@ -146,7 +149,6 @@ class PlayerTank extends Tank{
   move(dir){
     this.dir = dir
     this.container.rotation = Math.PI * dir / 2
-
     switch(dir){
       case UP: {
         this.container.y = this.y -= this.speed;
@@ -165,7 +167,6 @@ class PlayerTank extends Tank{
         break;
       }
     }
-
   }
 }
 
@@ -191,8 +192,6 @@ class EnemyTank extends Tank{
   init(texture){
     this.container.x = this.x
     this.container.y = this.y
-    this.container.width = this.size;
-    this.container.height = this.size;
 
     this.times++;
     if(!this.isAppear){

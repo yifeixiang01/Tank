@@ -153,10 +153,9 @@ class Bullet {
     let index = bulletArray.findIndex(bullet => bullet == this)
     bulletArray.splice(index, 1)
     
-    // crackArray.push(new CrackAnimation(CRACK_TYPE_BULLET, this))
     // if(!this.owner.isAI){
     //   BULLET_DESTROY_AUDIO.play();
     // }
-    new CrackAnimation(CRACK_TYPE_BULLET, this, this.x, this.y)
+    new CrackAnimation(CRACK_TYPE_BULLET, this.x, this.y)
   }
 }

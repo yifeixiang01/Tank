@@ -18,7 +18,7 @@ class Game{
     this.init()
   }
   init(){
-    map = new Map(2)
+    map = new Map(1)
 
 
     //加载资源
@@ -33,20 +33,19 @@ class Game{
       map.init();
 
       let enemyTank1 = new EnemyTank(tankTextures['tank_enemy_2.png'], 150, 130, LEFT);
-      let enemyTank2 = new EnemyTank(tankTextures['tank_enemy_2.png'], 200, 260, UP);
+      let enemyTank2 = new EnemyTank(tankTextures['tank_enemy_3.png'], 200, 260, UP);
       // let enemyTank3 = new EnemyTank(tankTextures['tank_enemy_3.png'], 300, 500, UP);
-      // let enemyTank4 = new EnemyTank(tankTextures['tank_enemy_4.png'], 400, 500, UP);
-      // let enemyTank5 = new EnemyTank(tankTextures['tank_enemy_5.png'], 500, 500, UP);
+      let enemyTank4 = new EnemyTank(tankTextures['tank_enemy_4.png'], 300, 300, UP);
+      let enemyTank5 = new EnemyTank(tankTextures['tank_enemy_5.png'], 260, 360, UP);
       app.stage.addChild(enemyTank1.container)
       app.stage.addChild(enemyTank2.container)
       // app.stage.addChild(enemyTank3.container)
-      // app.stage.addChild(enemyTank4.container)
-      // app.stage.addChild(enemyTank5.container)
+      app.stage.addChild(enemyTank4.container)
+      app.stage.addChild(enemyTank5.container)
 
-      let player = new PlayerTank(tankTextures[`tank_player_1.png`], 600, 600, UP);
+      let player = new PlayerTank(tankTextures[`tank_player_2.png`], 340, 200, UP);
       playerArray.push(player)
       app.stage.addChild(player.container)
-      player.shoot(1)
 
       app.ticker.add(() => {
         enemyTank1.move()
@@ -54,6 +53,12 @@ class Game{
 
         enemyTank2.move()
         enemyTank2.shoot()
+
+        enemyTank4.move()
+        enemyTank4.shoot()
+
+        enemyTank5.move()
+        enemyTank5.shoot()
       })
       //监听键盘事件
       this.addKeyEventListener()
@@ -76,7 +81,6 @@ class Game{
       if(this.gameState == 0){
         if(e.code == 'Space'){
           // this.startGame()
-          
         }
         if(e.code == 'ArrowUp' || e.code == 'ArrowDown'){
           this.menu.select()
@@ -87,19 +91,19 @@ class Game{
           console.log('shoot')
         }
         if(e.code == 'KeyS'){
-          console.log('down')
+
           playerArray[0].move(DOWN)
         }
         if(e.code == 'KeyW'){
-          console.log('up')
+
           playerArray[0].move(UP)
         }
         if(e.code == 'KeyA'){
-          console.log('left')
+
           playerArray[0].move(LEFT)
         }
         if(e.code == 'KeyD'){
-          console.log('right')
+
           playerArray[0].move(RIGHT)
         }
       }

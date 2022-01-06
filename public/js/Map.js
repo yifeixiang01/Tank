@@ -48,33 +48,36 @@ class Map{
     for(let i = 0; i < this.hTileCount; i++){
       for(let j = 0; j < this.wTileCount; j++){
         let item = this.mapLevel[i][j]
-        if(item == WALL || item == GRID || item == WATER || item == ICE){
-          let wallSprite = Sprite.from(tankTextures['build_wall.png'])
-          wallSprite.position.set(j * this.tileSize + this.offsetX, i * this.tileSize + this.offsetY)
-          wallSprite.width = this.tileSize
-          wallSprite.height = this.tileSize
-          this.container.addChild(wallSprite)
-        }else if(item == GRASS){
-          let grassSprite = Sprite.from(tankTextures['build_grass.png'])
-          grassSprite.position.set(j * this.tileSize + this.offsetX, i * this.tileSize + this.offsetY)
-          grassSprite.width = this.tileSize
-          grassSprite.height = this.tileSize
-          grassSprite.zIndex = 1000
-          this.container.addChild(grassSprite)
-        }else if(item == HOME){
-          let homeSprite = Sprite.from(tankTextures['home.png'])
-          homeSprite.position.set(j * this.tileSize + this.offsetX, i * this.tileSize + this.offsetY)
-          homeSprite.width = this.homesSize
-          homeSprite.height = this.homesSize
-          this.container.addChild(homeSprite)
+        
+          let sprite;
+          if(item == WALL || item == GRID || item == WATER || item == ICE){
+            sprite = Sprite.from(tankTextures['build_wall.png'])
+            sprite.position.set(j * this.tileSize + this.offsetX + this.tileSize / 2, i * this.tileSize + this.offsetY + this.tileSize / 2)
+            sprite.width = sprite.height = this.tileSize
+          }else if(item == GRASS){
+            sprite = Sprite.from(tankTextures['build_grass.png'])
+            sprite.position.set(j * this.tileSize + this.offsetX + this.tileSize / 2, i * this.tileSize + this.offsetY + this.tileSize / 2)
+            sprite.width = sprite.height = this.tileSize
+            sprite.zIndex = 1000
+          }else if(item == HOME){
+            sprite = Sprite.from(tankTextures['home.png'])
+            sprite.width = sprite.height = this.homesSize
+            sprite.position.set(j * this.tileSize + this.offsetX + this.homesSize / 2, i * this.tileSize + this.offsetY + this.homesSize / 2)
 
-          //家被摧毁
-          // let homeDestroyedSprite = Sprite.from(tankTextures['home_destroyed.png'])
-          // homeDestroyedSprite.position.set(j * this.tileSize + this.offsetX, i * this.tileSize + this.offsetY)
-          // homeDestroyedSprite.width = this.homesSize
-          // homeDestroyedSprite.height = this.homesSize
-          // this.container.addChild(homeDestroyedSprite)
-        }
+            //家被摧毁
+            // let homeDestroyedSprite = Sprite.from(tankTextures['home_destroyed.png'])
+            // homeDestroyedSprite.position.set(j * this.tileSize + this.offsetX, i * this.tileSize + this.offsetY)
+            // this.container.addChild(homeDestroyedSprite)
+          }
+
+          if(sprite){
+            sprite.anchor.set(0.5, 0.5)
+            this.container.addChild(sprite)
+          }
+          
+
+        
+        
       }
     }
     this.homeHit()
