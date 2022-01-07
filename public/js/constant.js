@@ -39,7 +39,7 @@ const GRASS = 3;
 const WATER = 4;
 const ICE = 5;
 const HOME = 9;
-const ANOTHREHOME = 8;
+const ANOTHERHOME = 8;
 
 /*****坦克及子弹的四个方向*****/
 const UP = 0;

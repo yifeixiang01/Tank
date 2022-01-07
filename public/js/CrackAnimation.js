@@ -5,8 +5,6 @@ class CrackAnimation{
     this.x = x;
     this.y = y;
 
-    
-
     this.init(type)
   }
   init(type){
@@ -19,6 +17,7 @@ class CrackAnimation{
     this.container.addChild(animatedSprite)
     this.container.position.set(this.x, this.y)
     app.stage.addChild(this.container)
+
     animatedSprite.onComplete = () => {
       this.container.destroy();
     }

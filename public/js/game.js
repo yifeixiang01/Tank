@@ -49,16 +49,12 @@ class Game{
 
       app.ticker.add(() => {
         enemyTank1.move()
-        enemyTank1.shoot()
 
         enemyTank2.move()
-        enemyTank2.shoot()
 
         enemyTank4.move()
-        enemyTank4.shoot()
 
         enemyTank5.move()
-        enemyTank5.shoot()
       })
       //监听键盘事件
       this.addKeyEventListener()

@@ -45,11 +45,11 @@ class Tank{
       }
     }
     this.container.position.set(this.x, this.y)
-    // if(!this.hit){
-    //   if(tankMapCollision(this, map)){
-    //     this.hit = true
-    //   }
-    // }
+    if(!this.hit){
+      if(tankMapCollision(this, map)){
+        this.hit = true
+      }
+    }
   }
 
   shoot(){
@@ -193,7 +193,7 @@ class EnemyTank extends Tank{
     this.container.x = this.x
     this.container.y = this.y
 
-    this.times++;
+    
     if(!this.isAppear){
       let temp = parseInt(this.times / 5) % 7;
       
@@ -204,17 +204,18 @@ class EnemyTank extends Tank{
       this.container.rotation = Math.PI * this.dir / 2
       this.container.addChild(enemyTankSprite)
 
-      this.shoot()
       //以一定的概率射击
       app.ticker.add(() => {
-
+        this.times++;
+        if(this.times % 50 == 0){
+          var ran = Math.random();
+          if(ran < this.shootRate){
+            this.times = 0;
+            this.shoot(2)
+          }
+        }
       })
-      // if(this.times % 50 == 0){
-      //   var ran = Math.random();
-      //   if(ran < this.shootRate){
-      //     this.shoot(2)
-      //   }
-      // }
+      
     }
   }
   move(){
@@ -227,24 +228,26 @@ class EnemyTank extends Tank{
     if(this.isAI){
       this.frame++;
       if(this.frame % 100 == 0 || this.hit){
+        
         this.dir = parseInt(Math.random() * 4)
         this.container.rotation = Math.PI * this.dir / 2
         this.hit = false;
         this.frame = 0;
       }
+      let tempX = this.x, tempY = this.y;
       if(this.dir == UP){
-        this.y -= this.speed;
+        tempY -= this.speed;
       }else if (this.dir == DOWN){
-        this.y += this.speed
+        tempY += this.speed
       }else if(this.dir == RIGHT){
-        this.x += this.speed
+        tempX += this.speed
       }else if(this.dir == LEFT){
-        this.x -= this.speed;
+        tempX -= this.speed;
       }
       this.isHit();
       if(!this.hit){
-        this.container.x = this.x
-        this.container.y = this.y
+        this.container.x = this.x = tempX
+        this.container.y = this.y = tempY
       }
     }
   }
