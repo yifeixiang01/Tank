@@ -16,9 +16,3 @@
 
 
 
-
-
-
-运行方式：
-1.安装依赖
-2.npm run start 或yarn start
