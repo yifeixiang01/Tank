@@ -32,29 +32,29 @@ class Game{
       
       map.init();
 
-      let enemyTank1 = new EnemyTank(tankTextures['tank_enemy_2.png'], 150, 130, LEFT);
-      let enemyTank2 = new EnemyTank(tankTextures['tank_enemy_3.png'], 200, 260, UP);
+      let enemyTank1 = new EnemyTank(tankTextures['tank_enemy_2.png'], 32, 130, LEFT);
+      // let enemyTank2 = new EnemyTank(tankTextures['tank_enemy_3.png'], 200, 260, UP);
       // let enemyTank3 = new EnemyTank(tankTextures['tank_enemy_3.png'], 300, 500, UP);
-      let enemyTank4 = new EnemyTank(tankTextures['tank_enemy_4.png'], 300, 300, UP);
-      let enemyTank5 = new EnemyTank(tankTextures['tank_enemy_5.png'], 260, 360, UP);
+      // let enemyTank4 = new EnemyTank(tankTextures['tank_enemy_4.png'], 300, 300, UP);
+      // let enemyTank5 = new EnemyTank(tankTextures['tank_enemy_5.png'], 260, 360, UP);
       app.stage.addChild(enemyTank1.container)
-      app.stage.addChild(enemyTank2.container)
+      // app.stage.addChild(enemyTank2.container)
       // app.stage.addChild(enemyTank3.container)
-      app.stage.addChild(enemyTank4.container)
-      app.stage.addChild(enemyTank5.container)
+      // app.stage.addChild(enemyTank4.container)
+      // app.stage.addChild(enemyTank5.container)
 
-      let player = new PlayerTank(tankTextures[`tank_player_2.png`], 340, 200, UP);
+      let player = new PlayerTank(tankTextures[`tank_player_2.png`], 32, 16, UP);
       playerArray.push(player)
       app.stage.addChild(player.container)
 
       app.ticker.add(() => {
         enemyTank1.move()
 
-        enemyTank2.move()
+        // enemyTank2.move()
 
-        enemyTank4.move()
+        // enemyTank4.move()
 
-        enemyTank5.move()
+        // enemyTank5.move()
       })
       //监听键盘事件
       this.addKeyEventListener()
@@ -67,8 +67,6 @@ class Game{
       //  bullet.x = 500
       //  bullet.y= 300
       // app.stage.addChild(bullet)
-
-      new CrackAnimation();
     })
   }
 

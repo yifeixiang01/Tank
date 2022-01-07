@@ -34,6 +34,7 @@ function CheckIntersect(object1, object2, overlap = 0){
  * 坦克与地图块碰撞
  * */ 
 function tankMapCollision(tank, mapObj){
+  
   //移动检测，记录最后一次的移动方向，根据方向判断+-overlap
   let tileNum = 0;  //需要检测的tile数
   let rowIndex = 0; //map中的行索引
@@ -41,73 +42,43 @@ function tankMapCollision(tank, mapObj){
   let overlap = 3;  //允许重叠的大小
 
 
-  //根据坦克的x,y 计算出坦克在map中的row和col
-  // switch(tank.dir){
-  //   case UP: {
-  //     rowIndex = parseInt((tank.y + overlap - map.offsetY) / mapObj.tileSize)
-  //     colIndex = parseInt((tank.x + overlap - map.offsetX) / mapObj.tileSize)
-  //     break;
-  //   }
-  //   case RIGHT: {
-  //     rowIndex = parseInt((tank.y + overlap - mapObj.offsetY) / mapObj.tileSize)
-  //     colIndex = parseInt((tank.x - overlap - mapObj.offsetX + tank.size) / mapObj.tileSize)
-  //   }
-  //   case DOWN: {
-  //     rowIndex = parseInt((tank.y - overlap - mapObj.offsetY + tank.size + tank.size) / mapObj.tileSize)
-  //     colIndex = parseInt((tank.x + overlap - mapObj.offsetX) / mapObj.tileSize)
-  //     break;
-  //   }
-  //   case LEFT: {
-  //     rowIndex = parseInt((tank.y + overlap - mapObj.offsetY) / mapObj.tileSize)
-  //     colIndex = parseInt((tank.x + overlap - mapObj.offsetX ) / mapObj.tileSize)
-  //   }
-  // }
-  rowIndex = parseInt((tank.y + overlap - map.offsetY) / mapObj.tileSize)
-  colIndex = parseInt((tank.x + overlap - map.offsetX) / mapObj.tileSize)
+
+  switch(tank.dir){
+    case UP: {
+
+      rowIndex = parseInt((tank.nextY - tank.size / 2 - mapObj.offsetY - overlap) / mapObj.tileSize); 
+      colIndex = parseInt((tank.nextX - mapObj.offsetX) / mapObj.tileSize)
+      break;
+    }
+    case RIGHT: {
+      rowIndex = parseInt((tank.nextY - mapObj.offsetY) / mapObj.tileSize)
+      colIndex = parseInt((tank.nextX + tank.size / 2 - mapObj.offsetX - overlap) / mapObj.tileSize); 
+      break;
+    }
+    case DOWN: {
+
+      rowIndex = parseInt((tank.nextY + tank.size / 2 - mapObj.offsetY - overlap) / mapObj.tileSize); 
+      colIndex = parseInt((tank.nextX - mapObj.offsetX) / mapObj.tileSize)
+      break;
+    }
+    case LEFT: {
+      rowIndex = parseInt((tank.nextY - mapObj.offsetY) / mapObj.tileSize)
+      colIndex = parseInt((tank.nextX - tank.size / 2 - mapObj.offsetX + overlap) / mapObj.tileSize); break;
+    }
+  }
+
   //超出地图
   if(rowIndex >= mapObj.hTileCount || rowIndex < 0 || colIndex >= mapObj.wTileCount || colIndex < 0){
+    console.log('超出地图')
     return true
   }
-  
-  // if(tank.dir === UP || tank.dir === DOWN){
-  //   //去除重叠部分
-  //   let tempWidth = parseInt(tank.x - map.offsetX - colIndex * mapObj.tileSize + tank.size - overlap)
-  //   if(tempWidth % mapObj.tileSize == 0){
-  //     tileNum = parseInt(tempWidth / mapObj.tileSize)
-  //   }else{
-  //     tileNum = parseInt(tempWidth / mapObj.tileSize) + 1
-  //   }
-  //   for(let i = 0; i < tileNum && (colIndex + i) < mapObj.wTileCount; i++){
-  //     let mapContent = mapObj.mapLevel[rowIndex][colIndex + 1]
-  //     if(mapContent == WALL || mapContent == GRID || mapContent == WATER || mapContent || mapContent == HOME || mapContent == ANOTHERHOME){
-  //       if(tank.dir == UP){
-  //         tank.y = mapObj.offsetY + rowIndex * mapObj.tileSize + mapObj.tileSize - overlap;
-  //       }else if(tank.dir == DOWN){
-  //         tank.y = mapObj.offsetY + rowIndex * mapObj.tileSize - tank.size + overlap;
-  //       }
-  //       return true;
-  //     }
-  //   }
-    
-  // }else{
-  //   let tempHeight = parseInt(tank.y - map.offsetY - rowIndex * mapObj.tileSize + tank.size - overlap)
-  //   if(tempHeight % mapObj.tileSize == 0){
-  //     tileNum = parseInt(tempHeight / mapObj.tileSize)
-  //   }else{
-  //     tileNum = parseInt(tempHeight / mapObj.tileSize)
-  //   }
-  //   for(let i = 0; i < tileNum && (rowIndex + i ) < mapObj.hTileCount; i++){
-  //     let mapContent = mapObj.mapLevel[rowIndex + i ][colIndex]
-  //     if(mapContent == WALL || mapContent == GRID || mapContent == WATER || mapContent == HOME || mapContent == ANOTHERHOME){
-  //       if(tank.dir == LEFT){
-  //         tank.x = mapObj.offsetX + colIndex * mapObj.tileSize + mapObj.tileSize - overlap;
-  //       }else if(tank.dir == RIGHT){
-  //         tank.x = mapObj.offsetX + colIndex * mapObj.tileSize - tank.size + overlap
-  //       }
-  //       return true;
-  //     }
-  //   }
-  // }
+  //检测是否碰撞地图块
+  let mapContent = mapObj.mapLevel[rowIndex][colIndex];
+  if(mapContent == WALL || mapContent == GRID || mapContent == WATER || mapContent == HOME || mapContent == ANOTHERHOME){
+    return true;
+  }else{
+    return false
+  }
 }
 
 /**
@@ -200,4 +171,3 @@ function bulletMapCollision(bullet, mapObj){
     return result;
   }
 }
-

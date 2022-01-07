@@ -15,43 +15,90 @@ class Tank{
     this.bullet = null;  //子弹
     this.shootRate = 0.6;  //射击的概率
     this.isDestroyed = false; 
-    this.tempX = 0;
-    this.tempY = 0;
+    this.nextX = 0;
+    this.nextY = 0;
   }
-
   /**
    * 碰撞检测
    * */ 
   isHit(){
+    //检测是否碰撞地图
     if(this.dir == LEFT){
-      if(this.x <= map.offsetX + this.size / 2){
-        this.x = map.offsetX + this.size / 2
+      if(this.nextX <= map.offsetX + this.size / 2){
+        this.nextX = map.offsetX + this.size / 2
         this.hit = true
       }
     }else if(this.dir == RIGHT){
-      if(this.x >= map.offsetX + map.mapWidth - this.size / 2){
-        this.x = map.offsetX + map.mapWidth - this.size / 2
+      if(this.nextX >= map.offsetX + map.mapWidth - this.size / 2){
+        this.nextX = map.offsetX + map.mapWidth - this.size / 2
         this.hit = true
       }
     }else if(this.dir == UP){
-      if(this.y <= map.offsetY + this.size / 2){
-        this.y = map.offsetY + this.size / 2
+      if(this.nextY <= map.offsetY + this.size / 2){
+        this.nextY = map.offsetY + this.size / 2
         this.hit = true
       }
     }else if(this.dir == DOWN){
-      if(this.y >= map.offsetY + map.mapHeight - this.size / 2){
-        this.y = map.offsetY + map.mapHeight - this.size / 2
+      if(this.nextY >= map.offsetY + map.mapHeight - this.size / 2){
+        this.nextY = map.offsetY + map.mapHeight - this.size / 2
         this.hit = true
       }
     }
-    this.container.position.set(this.x, this.y)
+    
+
     if(!this.hit){
       if(tankMapCollision(this, map)){
         this.hit = true
       }
     }
   }
+  move(dir){
+    this.hit = false;
+    let isCutDir = this.dir == dir
 
+    //如果是AI坦克，在一定时间或者碰撞之后切换方法
+    if(this.isAI && emenyStopTime > 0){
+      return;
+    }
+
+    if(this.isAI){ //地方坦克方向定时随机变化
+      this.frame++;
+      if(this.frame % 100 == 0 || this.hit){
+        this.dir = parseInt(Math.random() * 4)
+        this.frame = 0;
+      }
+    }else{//玩家坦克方向改变时，将只改变方向而不移动
+      this.dir = dir
+    }
+
+    this.container.rotation = Math.PI * this.dir / 2
+    
+    
+
+    this.nextX = this.x 
+    this.nextY = this.y
+
+    if(this.dir == UP){
+      this.nextY -= this.speed;
+    }else if (this.dir == DOWN){
+      this.nextY += this.speed
+    }else if(this.dir == RIGHT){
+      this.nextX += this.speed
+    }else if(this.dir == LEFT){
+      this.nextX -= this.speed;
+    }
+
+    this.isHit();
+
+    if((this.isAI && !this.hit) || (!this.isAI && !this.hit && isCutDir) ){
+      this.x = this.nextX
+      this.y = this.nextY
+      this.container.position.set(this.x, this.y)
+    }
+    
+    
+    
+  }
   shoot(){
     // if(this.isAI && emenyStopTime > 0){
     //   return;
@@ -75,6 +122,7 @@ class Tank{
     // crackArray.push(new CrackAnimation(crack_TYPE_TANK, this.ctx, this))
     // TANK_DESTROY_AUDIO.play();
   }
+  
 }
 
 
@@ -146,28 +194,6 @@ class PlayerTank extends Tank{
   destroy(){
     this.isDestroyed = true;
   }
-  move(dir){
-    this.dir = dir
-    this.container.rotation = Math.PI * dir / 2
-    switch(dir){
-      case UP: {
-        this.container.y = this.y -= this.speed;
-        break;
-      }
-      case RIGHT: {
-        this.container.x = this.x += this.speed;
-        break;
-      }
-      case DOWN: {
-        this.container.y = this.y += this.speed;
-        break;
-      }
-      case LEFT: {
-        this.container.x = this.x -= this.speed;
-        break;
-      }
-    }
-  }
 }
 
 /**
@@ -215,40 +241,6 @@ class EnemyTank extends Tank{
           }
         }
       })
-      
-    }
-  }
-  move(){
-    //如果是AI坦克，在一定时间或者碰撞之后切换方法
-    if(this.isAI && emenyStopTime > 0){
-      return;
-    }
-
-
-    if(this.isAI){
-      this.frame++;
-      if(this.frame % 100 == 0 || this.hit){
-        
-        this.dir = parseInt(Math.random() * 4)
-        this.container.rotation = Math.PI * this.dir / 2
-        this.hit = false;
-        this.frame = 0;
-      }
-      let tempX = this.x, tempY = this.y;
-      if(this.dir == UP){
-        tempY -= this.speed;
-      }else if (this.dir == DOWN){
-        tempY += this.speed
-      }else if(this.dir == RIGHT){
-        tempX += this.speed
-      }else if(this.dir == LEFT){
-        tempX -= this.speed;
-      }
-      this.isHit();
-      if(!this.hit){
-        this.container.x = this.x = tempX
-        this.container.y = this.y = tempY
-      }
     }
   }
 }
