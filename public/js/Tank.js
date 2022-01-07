@@ -176,7 +176,8 @@ class PlayerTank extends Tank{
     rect.drawRect(-this.size / 2, -this.size/2, this.size, this.size)
     rect.endFill();
     this.container.addChild(rect)
-    this.container.width = this.container.height = this.size;
+
+
     let player = Sprite.from(texture)
     // player.tint = 0xFF9933
     player.anchor.set(0.5, 0.5)
@@ -209,8 +210,8 @@ class EnemyTank extends Tank{
     this.isAI = true;
     this.speed = 1.5;
     this.dir = dir
-    this.x = x
-    this.y = y
+    this.x = x + this.size / 2
+    this.y = y + this.size / 2
 
     this.init(texture)
   }
@@ -226,9 +227,10 @@ class EnemyTank extends Tank{
     }else {
       let enemyTankSprite = Sprite.from(texture)
       enemyTankSprite.anchor.set(0.5, 0.5)
-
-      this.container.rotation = Math.PI * this.dir / 2
       this.container.addChild(enemyTankSprite)
+      this.container.rotation = Math.PI * this.dir / 2
+      this.container.position.set(this.x, this.y)
+      
 
       //以一定的概率射击
       app.ticker.add(() => {
