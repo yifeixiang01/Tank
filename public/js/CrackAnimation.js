@@ -16,7 +16,7 @@ class CrackAnimation{
     animatedSprite.loop = false
     this.container.addChild(animatedSprite)
     this.container.position.set(this.x, this.y)
-    app.stage.addChild(this.container)
+    map.mainArea.addChild(this.container)
 
     animatedSprite.onComplete = () => {
       this.container.destroy();

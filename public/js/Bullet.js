@@ -78,17 +78,17 @@ class Bullet {
       return
     }
     //临界检测
-    if(this.x < map.offsetX + this.size / 2){
-      this.x = map.offsetX + this.size / 2
+    if(this.x < this.size / 2){
+      this.x = this.size / 2
       this.hit = true
-    }else if(this.x > map.offsetX + map.mapWidth - this.size / 2){
-      this.x = map.offsetX + map.mapWidth - this.size / 2
+    }else if(this.x > map.mapWidth - this.size / 2){
+      this.x = map.mapWidth - this.size / 2
       this.hit = true
-    }else if(this.y < map.offsetY + this.size / 2){
-      this.y = map.offsetY + this.size / 2
+    }else if(this.y < this.size / 2){
+      this.y = this.size / 2
       this.hit = true
-    }else if(this.y > map.offsetY + map.mapHeight - this.size / 2){
-      this.y = map.offsetY + map.mapHeight - this.size / 2
+    }else if(this.y > map.mapHeight - this.size / 2){
+      this.y = map.mapHeight - this.size / 2
       this.hit = true
     }
     this.container.position.set(this.x, this.y)

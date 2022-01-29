@@ -39,42 +39,41 @@ function tankMapCollision(tank, mapObj){
   let tileNum = 0;  //需要检测的tile数
   let rowIndex = 0; //map中的行索引
   let colIndex = 0; //map中的列索引
-  let overlap = 3;  //允许重叠的大小
+  let overlap = 0;  //允许重叠的大小
 
 
 
   switch(tank.dir){
     case UP: {
-
-      rowIndex = parseInt((tank.nextY - tank.size / 2 - mapObj.offsetY - overlap) / mapObj.tileSize); 
-      colIndex = parseInt((tank.nextX - mapObj.offsetX) / mapObj.tileSize)
+      rowIndex = parseInt((tank.nextY - tank.size / 2 + overlap) / mapObj.tileSize); 
+      colIndex = parseInt(tank.nextX / mapObj.tileSize)
       break;
     }
     case RIGHT: {
-      rowIndex = parseInt((tank.nextY - mapObj.offsetY) / mapObj.tileSize)
-      colIndex = parseInt((tank.nextX + tank.size / 2 - mapObj.offsetX - overlap) / mapObj.tileSize); 
+      rowIndex = parseInt(tank.nextY / mapObj.tileSize)
+      colIndex = parseInt((tank.nextX + tank.size / 2 - overlap) / mapObj.tileSize); 
       break;
     }
     case DOWN: {
-
-      rowIndex = parseInt((tank.nextY + tank.size / 2 - mapObj.offsetY - overlap) / mapObj.tileSize); 
-      colIndex = parseInt((tank.nextX - mapObj.offsetX) / mapObj.tileSize)
+      rowIndex = parseInt((tank.nextY + tank.size / 2 - overlap) / mapObj.tileSize); 
+      colIndex = parseInt(tank.nextX / mapObj.tileSize)
       break;
     }
     case LEFT: {
-      rowIndex = parseInt((tank.nextY - mapObj.offsetY) / mapObj.tileSize)
-      colIndex = parseInt((tank.nextX - tank.size / 2 - mapObj.offsetX + overlap) / mapObj.tileSize); break;
+      rowIndex = parseInt(tank.nextY / mapObj.tileSize)
+      colIndex = parseInt((tank.nextX - tank.size / 2 + overlap) / mapObj.tileSize); break;
     }
   }
 
   //超出地图
-  if(rowIndex >= mapObj.hTileCount || rowIndex < 0 || colIndex >= mapObj.wTileCount || colIndex < 0){
+  if(rowIndex > mapObj.hTileCount || rowIndex < 0 || colIndex > mapObj.wTileCount || colIndex < 0){
     console.log('超出地图')
     return true
   }
   //检测是否碰撞地图块
   let mapContent = mapObj.mapLevel[rowIndex][colIndex];
   if(mapContent == WALL || mapContent == GRID || mapContent == WATER || mapContent == HOME || mapContent == ANOTHERHOME){
+    console.log('碰撞地图')
     return true;
   }else{
     return false
@@ -94,23 +93,23 @@ function bulletMapCollision(bullet, mapObj){
   //根据bullet的x,y计算出map中的row和col
   switch(bullet.dir){
     case UP: {
-      rowIndex = parseInt((bullet.y - mapObj.offsetY) / mapObj.tileSize)
-      colIndex = parseInt((bullet.x - mapObj.offsetX) / mapObj.tileSize)
+      rowIndex = parseInt(bullet.y / mapObj.tileSize)
+      colIndex = parseInt(bullet.x / mapObj.tileSize)
       break;
     }
     case DOWN: {
-      rowIndex = parseInt((bullet.y - mapObj.offsetY + bullet.size) / mapObj.tileSize)
-      colIndex = parseInt((bullet.x - mapObj.offsetX) / mapObj.tileSize)
+      rowIndex = parseInt((bullet.y + bullet.size) / mapObj.tileSize)
+      colIndex = parseInt(bullet.x / mapObj.tileSize)
       break;
     }
     case LEFT: {
-      rowIndex = parseInt((bullet.y - mapObj.offsetY) / mapObj.tileSize)
-      colIndex = parseInt((bullet.x - mapObj.offsetX) / mapObj.tileSize)
+      rowIndex = parseInt(bullet.y / mapObj.tileSize)
+      colIndex = parseInt(bullet.x / mapObj.tileSize)
       break;
     }
     case RIGHT: {
-      rowIndex = parseInt((bullet.y - mapObj.offsetY) / mapObj.tileSize)
-      colIndex = parseInt((bullet.x - mapObj.offsetX + bullet.size) / mapObj.tileSize)
+      rowIndex = parseInt(bullet.y / mapObj.tileSize)
+      colIndex = parseInt(bullet.x + bullet.size / mapObj.tileSize)
       break;
     }
   }
@@ -120,7 +119,7 @@ function bulletMapCollision(bullet, mapObj){
   }
 
   if(bullet.dir == UP || bullet.dir == DOWN){
-    let tempWidth = parseInt(bullet.x - map.offsetX - colIndex * mapObj.tileSize + bullet.size)
+    let tempWidth = parseInt(bullet.x - colIndex * mapObj.tileSize + bullet.size)
 
     if(tempWidth % mapObj.tileSize == 0){
       tileNum = parseInt(tempWidth / mapObj.tileSize)
@@ -143,7 +142,7 @@ function bulletMapCollision(bullet, mapObj){
       }
     }
   }else {
-    let tempHeight = parseInt(bullet.y - map.offsetY - rowIndex * mapObj.tileSize + bullet.size)
+    let tempHeight = parseInt(bullet.y - rowIndex * mapObj.tileSize + bullet.size)
     if(tempHeight % mapObj.tileSize == 0){
       tileNum = parseInt(tempHeight / mapObj.tileSize)
     }else{

@@ -4,6 +4,7 @@ class Map{
     console.log('level', level )
     this.level = level | 1;
     this.container = new Container()
+    this.mainArea = new Container()
     this.offsetX =32;      //主游戏区的X偏移量
     this.offsetY = 16;     //主游戏区的Y偏移量
     this.wTileCount = 26;  //主游戏区的宽度地图块数
@@ -31,19 +32,26 @@ class Map{
   } 
 
   init(){
-    let gameArea = new Graphics();
-    gameArea.beginFill(0xff0000)
-    gameArea.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-    gameArea.endFill();
+    app.stage.addChild(this.container)
+    //设置游戏区域的整体偏移
+    this.container.position.set(100, 32)
+
+    //整个游戏区的背景色
+    let gameAreaBg = new Graphics();
+    gameAreaBg.beginFill(0xff0000)
+    gameAreaBg.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+    gameAreaBg.endFill();
 
     //主游戏区
-    let mainArea = new Graphics();
-    mainArea.beginFill(0x000)
-    mainArea.drawRect(this.offsetX, this.offsetY, this.mapWidth, this.mapHeight)
-    mainArea.endFill();
+    this.mainArea.position.set(this.offsetX, this.offsetY, this.mapWidth, this.mapHeight)
 
-    this.container.addChild(gameArea, mainArea)
-    app.stage.addChild(this.container)
+    //主游戏区背景色
+    let mainAreaBg = new Graphics()
+    mainAreaBg.beginFill(0x000)
+    mainAreaBg.drawRect(0, 0, this.mapWidth, this.mapHeight)
+    mainAreaBg.endFill();
+    this.mainArea.addChild(mainAreaBg)
+    this.container.addChild(gameAreaBg, this.mainArea)
 
     for(let i = 0; i < this.hTileCount; i++){
       for(let j = 0; j < this.wTileCount; j++){
@@ -52,17 +60,17 @@ class Map{
           let sprite;
           if(item == WALL || item == GRID || item == WATER || item == ICE){
             sprite = Sprite.from(tankTextures['build_wall.png'])
-            sprite.position.set(j * this.tileSize + this.offsetX + this.tileSize / 2, i * this.tileSize + this.offsetY + this.tileSize / 2)
+            sprite.position.set(j * this.tileSize + this.tileSize / 2, i * this.tileSize + this.tileSize / 2)
             sprite.width = sprite.height = this.tileSize
           }else if(item == GRASS){
             sprite = Sprite.from(tankTextures['build_grass.png'])
-            sprite.position.set(j * this.tileSize + this.offsetX + this.tileSize / 2, i * this.tileSize + this.offsetY + this.tileSize / 2)
+            sprite.position.set(j * this.tileSize + this.tileSize / 2, i * this.tileSize + this.tileSize / 2)
             sprite.width = sprite.height = this.tileSize
             sprite.zIndex = 1000
           }else if(item == HOME){
             sprite = Sprite.from(tankTextures['home.png'])
             sprite.width = sprite.height = this.homesSize
-            sprite.position.set(j * this.tileSize + this.offsetX + this.homesSize / 2, i * this.tileSize + this.offsetY + this.homesSize / 2)
+            sprite.position.set(j * this.tileSize + this.homesSize / 2, i * this.tileSize + this.homesSize / 2)
 
             //家被摧毁
             // let homeDestroyedSprite = Sprite.from(tankTextures['home_destroyed.png'])
@@ -72,17 +80,13 @@ class Map{
 
           if(sprite){
             sprite.anchor.set(0.5, 0.5)
-            this.container.addChild(sprite)
+            this.mainArea.addChild(sprite)
           }
-          
-
-        
-        
       }
     }
     this.homeHit()
   }
-
+  
   /**
    * 画固定不变的部分
    * */ 

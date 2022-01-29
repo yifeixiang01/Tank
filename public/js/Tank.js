@@ -1,4 +1,3 @@
-
 class Tank{
   constructor(){
     this.container = new Container()
@@ -24,23 +23,23 @@ class Tank{
   isHit(){
     //检测是否碰撞地图
     if(this.dir == LEFT){
-      if(this.nextX <= map.offsetX + this.size / 2){
-        this.nextX = map.offsetX + this.size / 2
+      if(this.nextX < + this.size / 2){
+        this.nextX = + this.size / 2
         this.hit = true
       }
     }else if(this.dir == RIGHT){
-      if(this.nextX >= map.offsetX + map.mapWidth - this.size / 2){
-        this.nextX = map.offsetX + map.mapWidth - this.size / 2
+      if(this.nextX > map.mapWidth - this.size / 2){
+        this.nextX = map.mapWidth - this.size / 2
         this.hit = true
       }
     }else if(this.dir == UP){
-      if(this.nextY <= map.offsetY + this.size / 2){
-        this.nextY = map.offsetY + this.size / 2
+      if(this.nextY < this.size / 2){
+        this.nextY = this.size / 2
         this.hit = true
       }
     }else if(this.dir == DOWN){
-      if(this.nextY >= map.offsetY + map.mapHeight - this.size / 2){
-        this.nextY = map.offsetY + map.mapHeight - this.size / 2
+      if(this.nextY > map.mapHeight - this.size / 2){
+        this.nextY = map.mapHeight - this.size / 2
         this.hit = true
       }
     }
@@ -75,7 +74,7 @@ class Tank{
     
     
 
-    this.nextX = this.x 
+    this.nextX = this.x  
     this.nextY = this.y
 
     if(this.dir == UP){
@@ -107,7 +106,7 @@ class Tank{
       return;
     }else{
       this.bullet = new Bullet(this, this.type, this.dir)
-      app.stage.addChild(this.bullet.container)
+      map.mainArea.addChild(this.bullet.container)
 
       // if(!this.isAI){
       //   ATTACK_AUDIO.play()
@@ -122,7 +121,6 @@ class Tank{
     // crackArray.push(new CrackAnimation(crack_TYPE_TANK, this.ctx, this))
     // TANK_DESTROY_AUDIO.play();
   }
-  
 }
 
 
@@ -188,7 +186,7 @@ class PlayerTank extends Tank{
 
     if(this.isProtected){
       var temp = parseInt((500 - this.protectedTime) / 5) % 2;
-      
+
     }
   }
 
