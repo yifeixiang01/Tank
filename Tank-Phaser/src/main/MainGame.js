@@ -48,7 +48,7 @@ class MainGame extends Phaser.Scene {
     this.maxDisplayEnemyNum = 4    // 一次最多显示的坦克数量
     this.level = 20              // 当前关卡数
     this.players = [{name: 'player1', grade: 2}, {name: 'player2', grade: 1}]
-
+    // this.players = [{name: 'player1', grade: 2}]
   }
 
   preload(){
@@ -119,7 +119,8 @@ class MainGame extends Phaser.Scene {
 
   update(){
     // 监听玩家按键
-    this.playerGroup.onKeyboard()
+    // this.playerGroup.onKeyboard()
+    this.playerGroup.onPlayerKeyboard()
 
   }
 
