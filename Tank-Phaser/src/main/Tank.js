@@ -321,7 +321,7 @@ class Player extends Tank {
   isShooted(){
     if(this.isProtected) return
 
-    if(this.grade > 1){  
+    if(this.grade === 4){  
       this.grade = 1
       this.setGrade(this.grade)
       this.playAnimation('stay')

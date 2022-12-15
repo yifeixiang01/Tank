@@ -34,10 +34,21 @@ class PlayerGroup extends Phaser.Physics.Arcade.Group  {
 
     this.players = players
 
-    this.controls = {
-      'player1': [
-        {key: 'up', type: 'move-up'}, {key: 'right', type: 'move-right'},{key: 'down', type: 'move-down'},{key: 'left', type: 'move-left'},{key: 'SPACE', type: 'shoot'}
-      ]
+    this.playerControls = {
+      'player1': {
+        'KeyW': UP,
+        'KeyS': DOWN,
+        'KeyA': LEFT,
+        'KeyD': RIGHT,
+        'Space': 'shoot'
+      },
+      'player2': { 
+        'ArrowUp': UP,
+        'ArrowDown': DOWN,
+        'ArrowLeft': LEFT,
+        'ArrowRight': RIGHT,
+        'Numpad0': 'shoot'
+      }
     }
 
     this.mapArea = mapArea
@@ -46,7 +57,9 @@ class PlayerGroup extends Phaser.Physics.Arcade.Group  {
 
     this.createAnimation()
 
-    this.onKeyboard2()
+    // this.onKeyboard2()
+
+    this.setPlayerKeys()
   }
 
   start() {
@@ -57,15 +70,15 @@ class PlayerGroup extends Phaser.Physics.Arcade.Group  {
   createPlayers(){
     const { tileWidth, tileHeight, width: mapWidth, height: mapHeight, x: mapX, y: mapY } = this.mapArea
     this.playerBirthPosition.forEach(({ row, col }, index) => {
-      const player = this.players[index]
-      if(player){
-        const { name, grade } = player 
+      const playerMsg = this.players[index]
+      if(playerMsg){
+        const { name, grade } = playerMsg 
         const x = mapX + ( col + 0.5) * tileWidth - mapWidth / 2 + 8
         const y = mapY + ( row + 0.5 ) * tileHeight - mapHeight / 2 + 8
-  
-        const tank = this.createTank(x, y, name, grade)
-        this.players[index].tank = tank
-        this[name] = tank
+        
+        const playerTank = this.createTank(x, y, name, grade)
+        playerMsg.tank = playerTank
+        this[name] = playerTank
       }
     })
   }
@@ -80,6 +93,7 @@ class PlayerGroup extends Phaser.Physics.Arcade.Group  {
       player.crashSound = 'playerCrack'
       // player.moveSound = 'move'
       player.isProtected = true
+
       return player
     }
   }
@@ -158,6 +172,92 @@ class PlayerGroup extends Phaser.Physics.Arcade.Group  {
         this.player2.shoot()
       }
     },this.scene)
+    let arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'] 
+    // arr.forEach(key => {
+    //   this.scene.input.keyboard.on(`keydown-${key}`,(e) => {
+    //     console.log('keydown', key, e)
+    //   },this.scene)
+    // })
+
+    this.scene.input.keyboard.on(`keydown`,(e) => {
+      console.log('keydown', e)
+      switch(e.key){
+        case 'w': this.player1.move(UP); break;
+        case 's': this.player1.move(DOWN); break;
+        case 'a': this.player1.move(LEFT); break;
+        case 'd': this.player1.move(RIGHT); break;
+        // case 'space': this.player1.shoot(); break;
+      }
+    },this.scene)
+    this.scene.input.keyboard.on(`keyup`,(e) => {
+      console.log('keyup', e)
+      if(e.key !== 'space'){
+        // this.player1.stay()
+      }
+      
+    },this.scene)
+    
+  }
+
+  // 键位设置
+  setPlayerKeys(){
+
+    // 存在玩家同时按下多个移动键位的情况，如果只存储最后一次键位，当最后一次按下的移动键位弹起时，上一个移动键位没有弹起，则需要重新抬起再按下才会移动，影响操作
+    // 这里存储了用户按下的多个移动键位，当最后一次移动键位弹起，会继续上一次的移动键位
+    // 比如：先按下“上”，再按下“右”，坦克向右移动；当“右”键抬起时，会执行“上”的动作
+    this.scene.input.keyboard.on("keydown",(e) => {
+      const key = e.code
+
+      this.players.forEach(player => {
+        const controls = this.playerControls[player.name]
+        if(key in controls && controls[key] !== 'shoot'){
+          // 给玩家创建键位数组，用于保存按下的键位
+          if(!Array.isArray(player.keys)){
+           player.keys = [] 
+          }
+
+          if(!player.keys.includes(key)){
+            player.keys.push(key)
+          }
+        }
+        
+        // 响应玩家shoot
+        if(key in controls && controls[key] === 'shoot'){
+          player.tank.shoot()
+        }
+      })
+
+    },this.scene)
+
+    this.scene.input.keyboard.on("keyup",(e) => {
+      const key = e.code 
+      this.players.forEach(player => {
+
+        // 键位弹起，将键位从玩家的键位列表里删除
+        if(Array.isArray(player.keys) && player.keys.includes(key)){
+          player.keys.splice(player.keys.indexOf(e.code), 1)
+        }
+        // 当玩家的键位列表为空时，玩家坦克停止移动
+        if(Array.isArray(player.keys) && player.keys.length == 0){
+          player.tank.stay()
+        }
+      })
+      
+    },this.scene)
+  }
+
+  // 键位功能响应
+  onPlayerKeyboard(){
+    this.players.forEach(player => {
+      const controls = this.playerControls[player.name]
+
+      if(Array.isArray(player.keys) && player.keys.length > 0){
+        const len = player.keys.length
+        const key = player.keys[ len - 1]
+        const direction = controls[key]
+        player.tank.move(direction)
+      }
+    })
   }
 }
 
