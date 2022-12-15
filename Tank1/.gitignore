@@ -1,0 +1,8 @@
+.temp/
+.rn_temp/
+TinnoveCinemaTicket-H5/node_modules/
+.DS_Store
+.node_modules/
+.Tank1/node_modules/
+.Tank-phaser/node_modules/
+
